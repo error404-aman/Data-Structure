@@ -1,0 +1,117 @@
+/*WAP to implement various operation on Arrays ( Insert, Delete, Traverse,Copy and Merge)*/
+
+#include <stdio.h>
+#define MAX_SIZE 100
+
+int main()
+{
+    int arr[MAX_SIZE], copied_arr[MAX_SIZE], arr2[MAX_SIZE];
+    int size, i, j, k, new, pos, c, new_size = 0;
+
+    printf("Enter the size of the array");
+    scanf("%d", &size);
+
+    printf("Enter %d elements for the array:\n", size);
+    for (i = 0; i < size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Original array: \n");
+    for (i = 0; i < size; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    printf("1. Insert\n");
+    printf("2. Delete\n");
+    printf("3. Traverse\n");
+    printf("4. Copy\n");
+    printf("5. Merge (with another array)\n");
+    printf("Enter your choice: ");
+    scanf("%d", &c);
+    switch (c)
+    {
+    case 1:
+        printf("Enter the element to insert: ");
+        scanf("%d", &new);
+        printf("Enter the position (0 to %d): ", size);
+        scanf("%d", &pos);
+        for (i = size; i > pos; i--)
+        {
+            arr[i] = arr[i - 1];
+        }
+        arr[pos] = new;
+        size++;
+        printf("Element inserted successfully.\n");
+        for (i = 0; i < size; i++)
+        {
+            printf("%d ",arr[i]);
+        }
+        break;
+
+    case 2:
+        printf("Enter the position of the element to delete");
+        scanf("%d", &pos);
+        for (i = pos; i < size - 1; i++)
+        {
+            arr[i] = arr[i + 1];
+        }
+        size--;
+        printf("Element deleted successfully.\n");
+        for (i = 0; i < size; i++)
+        {
+            printf("%d ",arr[i]);
+        }
+        break;
+    case 3:
+        printf("Array elements: ");
+        for (i = 0; i < size; i++)
+        {
+            printf("%d ", arr[i]);
+        }
+        printf("\n");
+        for (i = 0; i < size; i++)
+        {
+            printf("%d ",arr[i]);
+        }
+        break;
+    case 4:
+        for (i = 0; i < size; i++)
+        {
+            copied_arr[i] = arr[i];
+        }
+        printf("Copied array: ");
+        for (i = 0; i < size; i++)
+        {
+            printf("%d ", copied_arr[i]);
+        }
+        printf("\n");
+        break;
+    case 5:
+        printf("Enter the size of the second array");
+        scanf("%d", &new_size);
+        printf("Enter elements for the second array:\n");
+        for (i = 0; i < new_size; i++)
+        {
+            scanf("%d", &copied_arr[i]);
+        }
+        for (i = 0; i < new_size; i++)
+        {
+            arr2[i] = copied_arr[i];
+        }
+        k = size + new_size;
+        for (j = new_size,i=0; j < k; j++,i++)
+        {
+            arr2[j] = arr[i];
+        }
+        printf("Merged array:\n");
+        
+        for (i = 0; i < k; i++)
+        {
+            printf("%d ", arr2[i]);
+        }
+        break;
+    }
+    return 0;
+}
