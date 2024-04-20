@@ -1,0 +1,40 @@
+/*WAP to implement Sparse Matrix Representation*/
+
+#include <stdio.h>
+#define MAX 10
+
+int main() 
+{
+    int a[10][10], b[MAX][3], r, c, i, j, k = 0;
+    printf("Enter the size of matrix (row & column)\n");
+    scanf("%d %d", &r, &c);
+
+    printf("Enter the elements in the matrix\n");
+    for (i = 0; i < r; i++) 
+    {
+        for (j = 0; j < c; j++)
+        {
+            printf("Enter the element in a[%d][%d]: ", i, j);
+            scanf("%d", &a[i][j]);
+        }
+    }
+
+    for (i = 0; i < r; i++) 
+    {
+        for (j = 0; j < c; j++)
+        {
+            b[k][0] = i;
+            b[k][1] = j;
+            b[k][2] = a[i][j];
+            k++;
+        }
+    }
+
+    printf("Sparse matrix representation (row, column, value):\n");
+    for (i = 0; i < k; i++) 
+    {
+        printf("%d %d %d\n", b[i][0], b[i][1], b[i][2]);
+    }
+
+    return 0;
+}
