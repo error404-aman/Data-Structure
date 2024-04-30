@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 10
+
+struct queue{
+    int items[MAX_SIZE];
+    int front;
+    int rear;
+    int capacity;
+};
+
+struct queue* q;
+
+// Function to initialize the queue
+void createQueue(int capacity) {
+    q= malloc(sizeof(struct queue));  // Allocate memory for the stack
+    if (q == NULL) {
+        printf("Failed to allocate memory.\n");
+        return;
+    }
+    q->capacity = capacity;
+    q->front = -1;
+    q->rear = -1;
+}
+
+// Check if the queue is full
+bool isFull() {
+    return ((q->rear + 1) % q->capacity) == q->front;
+}
+
+// Check if the queue is empty
+bool isEmpty() {
+    return q->front == -1;
+}
+
+// Add an element to the queue
+void enqueue(int item) {
+    if (isFull(q)) {
+        printf("Queue is full!\n");
+    } else {
+        if (q->front == -1) { // first element being inserted
+            q->front = 0;
+        }
+        q->rear = (q->rear + 1) % q->capacity;
+        q->items[q->rear] = item;
+        printf("%d inserted in queue\n", item);
+    }
+}
+
+// Remove and return the front element of the queue
+int dequeue() {
+    if (isEmpty(q)) {
+        printf("Queue is empty!\n");
+        return -1; // return -1 or any invalid value indicating queue is empty
+    } else {
+        int item = q->items[q->front];
+        if (q->front == q->rear) { // if the queue has only one element
+            q->front = -1;
+            q->rear = -1;
+        } else {
+            q->front = (q->front + 1) % q->capacity;
+        }
+        return item;
+    }
+}
+
+// Return the front element of the queue without removing it
+int front() {
+    if (isEmpty(q)) {
+        printf("Queue is empty!\n");
+        return -1;
+    } else {
+        return q->items[q->front];
+    }
+}
+
+// Return the rear element of the queue
+int rear() {
+    if (isEmpty(q)) {
+        printf("Queue is empty!\n");
+        return -1;
+    } else {
+        return q->items[q->rear];
+    }
+}
+
+// Display all elements of the queue
+void displayQueue() {
+    if (isEmpty(q)) {
+        printf("Queue is empty!\n");
+    } else {
+        printf("Queue elements are: ");
+        int count = (q->rear + q->capacity - q->front) % q->capacity + 1;
+        for (int i = 0; i < count; i++) {
+            int index = (q->front + i) % q->capacity;
+            printf("%d ", q->items[index]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+
+    // Create a queue of capacity MAX_SIZE
+    createQueue(MAX_SIZE);
+
+    // Demonstrate queue operations
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    printf("%d deleted from queue\n", dequeue(&q));
+    printf("Front item is %d\n", front(&q));
+    printf("Rear item is %d\n", rear(&q));
+    displayQueue(&q);
+
+    return 0;
+}
