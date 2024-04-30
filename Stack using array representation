@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 10
+
+struct stack{
+    int items[MAX_SIZE];
+    int top;
+    int capacity;
+};
+
+struct stack* s;
+
+// Function to initialize the stack
+void createStack(int capacity) {
+    s = malloc(sizeof(struct stack));  // Allocate memory for the stack
+    if (s == NULL) {
+        printf("Failed to allocate memory.\n");
+        return;
+    }
+    s->capacity = capacity;
+    s->top = -1; // top is -1 when the stack is empty
+}
+
+// Check if the stack is full
+bool isFull() {
+    return s->top == s->capacity - 1;
+}
+
+// Check if the stack is empty
+bool isEmpty() {
+    return s->top == -1;
+}
+
+// Add an element to the stack
+void push(int item) {
+    if (isFull(s)) {
+        printf("Stack is full!\n");
+    } else {
+        s->items[++s->top] = item;
+        printf("%d pushed to stack\n", item);
+    }
+}
+
+// Remove and return the top element of the stack
+int pop() {
+    if (isEmpty(s)) {
+        printf("Stack is empty!\n");
+        return -1; // return -1 or any invalid value indicating stack is empty
+    } else {
+        return s->items[s->top--];
+    }
+}
+
+// Return the top element of the stack without removing it
+int peek() {
+    if (isEmpty(s)) {
+        printf("Stack is empty!\n");
+        return -1; // return -1 or any invalid value indicating stack is empty
+    } else {
+        return s->items[s->top];
+    }
+}
+
+int main() {
+    // Create a stack of capacity MAX_SIZE
+    createStack(MAX_SIZE);
+
+    // Demonstrate stack operations
+    push(10);
+    push(20);
+    push(30);
+    printf("%d popped from stack\n", pop(&s));
+    printf("Top element is %d\n", peek(&s));
+
+    if (isEmpty()) {
+        printf("Stack is empty\n");
+    } else {
+        printf("Stack is not empty\n");
+    }
+
+    return 0;
+}
