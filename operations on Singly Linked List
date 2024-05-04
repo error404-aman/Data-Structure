@@ -1,0 +1,158 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Insert at the beginning
+struct Node* insertAtBeginning(struct Node* head, int data) {
+    struct Node* newNode = createNode(data);
+    newNode->next = head;
+    return newNode;
+}
+
+// Insert at the end
+struct Node* insertAtEnd(struct Node* head, int data) {
+    struct Node* newNode = createNode(data);
+    if (head == NULL) {
+        return newNode;
+    }
+    struct Node* current = head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+    current->next = newNode;
+    return head;
+}
+
+// Insert at specific position
+struct Node* insertAtPosition(struct Node* head, int data, int position) {
+    struct Node* newNode = createNode(data);
+    if (position == 1) {
+        newNode->next = head;
+        return newNode;
+    }
+    struct Node* current = head;
+    for (int i = 1; current != NULL && i < position - 1; i++) {
+        current = current->next;
+    }
+    if (current == NULL) {
+        printf("Position exceeds the size of the linked list\n");
+        return head;
+    }
+    newNode->next = current->next;
+    current->next = newNode;
+    return head;
+}
+
+// Delete from the beginning
+struct Node* deleteFromBeginning(struct Node* head) {
+    if (head == NULL) return NULL;
+    struct Node* temp = head;
+    head = head->next;
+    free(temp);
+    return head;
+}
+
+// Delete from the end
+struct Node* deleteFromEnd(struct Node* head) {
+    if (head == NULL) return NULL;
+    if (head->next == NULL) {
+        free(head);
+        return NULL;
+    }
+    struct Node* current = head;
+    while (current->next->next != NULL) {
+        current = current->next;
+    }
+    free(current->next);
+    current->next = NULL;
+    return head;
+}
+
+// Delete specific value
+struct Node* deleteValue(struct Node* head, int value) {
+    struct Node* current = head;
+    struct Node* previous = NULL;
+    while (current != NULL && current->data != value) {
+        previous = current;
+        current = current->next;
+    }
+    if (current == NULL) return head; // value not found
+    if (previous == NULL) {
+        head = current->next;
+    } else {
+        previous->next = current->next;
+    }
+    free(current);
+    return head;
+}
+
+// Traverse linked list
+void traverse(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+// Count the number of nodes
+int countNodes(struct Node* head) {
+    int count = 0;
+    struct Node* current = head;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+// Copy linked list
+struct Node* copyLinkedList(struct Node* head) {
+    if (head == NULL) return NULL;
+    struct Node* current = head;
+    struct Node* newList = NULL;
+    struct Node** tail = &newList;
+    
+    while (current != NULL) {
+        *tail = createNode(current->data);
+        tail = &((*tail)->next);
+        current = current->next;
+    }
+    return newList;
+}
+
+int main() {
+    struct Node* head = NULL;
+    head = insertAtEnd(head, 10);
+    head = insertAtEnd(head, 20);
+    head = insertAtBeginning(head, 5);
+    head = insertAtPosition(head, 15, 2);
+
+    printf("Original List: ");
+    traverse(head);
+    printf("Number of nodes: %d\n", countNodes(head));
+
+    head = deleteFromBeginning(head);
+    head = deleteValue(head, 20);
+    printf("After Deletions: ");
+    traverse(head);
+
+    struct Node* copiedList = copyLinkedList(head);
+    printf("Copied List: ");
+    traverse(copiedList);
+
+    return 0;
+}
